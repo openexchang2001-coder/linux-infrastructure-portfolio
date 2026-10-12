@@ -18,3 +18,12 @@ groups:
         annotations:
           summary: mc-monitor exporter is unreachable
           description: Prometheus cannot scrape mc-monitor for over 2 minutes.
+
+      - alert: MinecraftMetricsMissing
+        expr: absent_over_time(minecraft_status_healthy{job="mc-monitor"}[2m])
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: Minecraft monitoring metrics are missing
+          description: Minecraft health metrics have been absent for over 2 minutes.
