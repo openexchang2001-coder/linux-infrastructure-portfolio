@@ -1,0 +1,25 @@
+name: Minecraft Compose Validate
+
+on:
+  push:
+    paths:
+      - 'minecraft-server/compose.yaml'
+      - '.github/workflows/minecraft-compose-check.yml'
+  pull_request:
+    paths:
+      - 'minecraft-server/compose.yaml'
+      - '.github/workflows/minecraft-compose-check.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate Compose configuration
+        run: |
+          mkdir -p minecraft-server/secrets
+          printf 'ci-dummy-password-do-not-use\n' > minecraft-server/secrets/rcon_password.txt
+          cd minecraft-server
+          docker compose config --quiet

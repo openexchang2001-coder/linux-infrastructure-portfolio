@@ -1,0 +1,19 @@
+# Minecraft runtime data and world files
+/data/
+/backups/
+/secrets/
+# Local configuration and logs
+.env
+*.log
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+# Editor/OS
+.vscode/
+.DS_Store
+Thumbs.db
+# Safety copies created by the restore script
+/data.before-restore-*/
+
+*:Zone.Identifier

@@ -1,0 +1,48 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server:latest
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    ports:
+      # ローカルPCからのみ接続可能。公開時は別途安全対策を検討する。
+      - "127.0.0.1:25565:25565"
+    environment:
+      EULA: "TRUE" # 利用規約を確認・同意した場合のみ使用する
+      TYPE: "PAPER"
+      MEMORY: "2G"
+      MAX_PLAYERS: "5"
+      ONLINE_MODE: "TRUE"
+      ENABLE_WHITELIST: "TRUE"
+      ENFORCE_WHITELIST: "TRUE"
+      MOTD: "Infrastructure Portfolio Minecraft Server"
+      TZ: "Asia/Tokyo"
+      RCON_PASSWORD_FILE: "/run/secrets/rcon_password"
+    volumes:
+      - ./data:/data
+    secrets:
+      - rcon_password
+
+  backups:
+    image: itzg/mc-backup:latest
+    restart: unless-stopped
+    depends_on:
+      minecraft:
+        condition: service_healthy
+    environment:
+      RCON_HOST: "minecraft"
+      RCON_PASSWORD_FILE: "/run/secrets/rcon_password"
+      BACKUP_INTERVAL: "24h"
+      BACKUP_ON_STARTUP: "true"
+      INITIAL_DELAY: "0"
+      PRUNE_BACKUPS_DAYS: "7"
+      TZ: "Asia/Tokyo"
+    volumes:
+      - ./data:/data:ro
+      - ./backups:/backups
+    secrets:
+      - rcon_password
+
+secrets:
+  rcon_password:
+    file: ./secrets/rcon_password.txt
