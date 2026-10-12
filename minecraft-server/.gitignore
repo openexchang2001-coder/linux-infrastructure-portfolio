@@ -19,3 +19,10 @@ Thumbs.db
 *:Zone.Identifier
 
 *.bak
+
+/secrets/gmail_app_password.txt
+/monitoring/alertmanager.gmail.local.yml
+
+# Local Alertmanager credentials
+/secrets/
+/monitoring/alertmanager.gmail.local.yml

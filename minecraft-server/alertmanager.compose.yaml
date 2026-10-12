@@ -1,0 +1,16 @@
+services:
+  alertmanager:
+    image: prom/alertmanager:v0.34.1
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --storage.path=/alertmanager
+      - --cluster.listen-address=
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager_data:/alertmanager
+    ports:
+      - "127.0.0.1:9093:9093"
+
+volumes:
+  alertmanager_data:

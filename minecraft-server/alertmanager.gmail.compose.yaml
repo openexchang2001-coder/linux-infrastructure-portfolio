@@ -1,0 +1,5 @@
+services:
+  alertmanager:
+    volumes:
+      - ./monitoring/alertmanager.gmail.local.yml:/etc/alertmanager/alertmanager.yml:ro
+      - ./secrets/gmail_app_password.txt:/run/secrets/gmail_app_password:ro

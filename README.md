@@ -74,3 +74,19 @@ Bashを使用してバックアップ運用を自動化しました。
 
 
 
+
+
+## Alertmanager Gmail Notifications
+
+Implemented automated failure and recovery notifications using
+Prometheus, Alertmanager, and Gmail SMTP.
+
+**Validated:**
+- Minecraft server failure detection
+- FIRING email notification
+- Server recovery
+- RESOLVED email notification
+- SMTP authentication troubleshooting
+- Local credential protection
+
+[View the notification validation report](minecraft-server/docs/alertmanager-gmail-validation.md)
