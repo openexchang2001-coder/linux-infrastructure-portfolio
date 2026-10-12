@@ -48,3 +48,18 @@ jobs:
             -v "$PWD/minecraft-server/monitoring:/etc/alertmanager:ro" \
             prom/alertmanager:v0.34.1 \
             check-config /etc/alertmanager/alertmanager.yml
+
+      - name: Negative test - reject invalid Prometheus rules
+        run: |
+          printf 'groups: [\n' > /tmp/invalid-alert-rules.yml
+
+          if docker run --rm \
+            --entrypoint /bin/promtool \
+            -v /tmp/invalid-alert-rules.yml:/tmp/invalid-alert-rules.yml:ro \
+            prom/prometheus:latest \
+            check rules /tmp/invalid-alert-rules.yml; then
+            echo "::error::Invalid rules were incorrectly accepted"
+            exit 1
+          else
+            echo "PASS: Invalid alert rules were rejected"
+          fi
