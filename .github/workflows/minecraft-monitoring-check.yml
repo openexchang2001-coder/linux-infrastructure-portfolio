@@ -1,0 +1,39 @@
+name: Minecraft Monitoring Validate
+
+on:
+  push:
+    paths:
+      - 'minecraft-server/compose.yaml'
+      - 'minecraft-server/monitoring.compose.yaml'
+      - 'minecraft-server/monitoring/**'
+      - '.github/workflows/minecraft-monitoring-check.yml'
+  pull_request:
+    paths:
+      - 'minecraft-server/compose.yaml'
+      - 'minecraft-server/monitoring.compose.yaml'
+      - 'minecraft-server/monitoring/**'
+      - '.github/workflows/minecraft-monitoring-check.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Prepare dummy CI-only secrets
+        run: |
+          mkdir -p minecraft-server/secrets
+          printf 'ci-only-test-rcon-password\n' > minecraft-server/secrets/rcon_password.txt
+          printf 'ci-only-test-grafana-password\n' > minecraft-server/secrets/grafana_admin_password.txt
+      - name: Validate merged Compose
+        run: |
+          cd minecraft-server
+          docker compose -f compose.yaml -f monitoring.compose.yaml config --quiet
+      - name: Validate Prometheus configuration and rules
+        run: |
+          docker run --rm \
+            -v "$PWD/minecraft-server/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro" \
+            -v "$PWD/minecraft-server/monitoring/alert-rules.yml:/etc/prometheus/alert-rules.yml:ro" \
+            --entrypoint promtool prom/prometheus:latest \
+            check config /etc/prometheus/prometheus.yml

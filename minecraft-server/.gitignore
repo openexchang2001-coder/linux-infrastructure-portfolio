@@ -17,3 +17,5 @@ Thumbs.db
 /data.before-restore-*/
 
 *:Zone.Identifier
+
+*.bak

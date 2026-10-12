@@ -1,0 +1,31 @@
+services:
+  docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy:0.3.0
+    restart: unless-stopped
+    environment:
+      CONTAINERS: "1"
+      INFO: "1"
+      POST: "0"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    expose:
+      - "2375"
+    networks:
+      - docker_socket_internal
+
+  docker-exporter:
+    image: ghcr.io/davidborzek/docker-exporter:latest
+    restart: unless-stopped
+    environment:
+      DOCKER_HOST: tcp://docker-socket-proxy:2375
+    depends_on:
+      - docker-socket-proxy
+    expose:
+      - "8080"
+    networks:
+      - default
+      - docker_socket_internal
+
+networks:
+  docker_socket_internal:
+    internal: true

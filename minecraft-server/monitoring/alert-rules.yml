@@ -1,0 +1,20 @@
+groups:
+  - name: minecraft-availability
+    rules:
+      - alert: MinecraftServerDown
+        expr: minecraft_status_healthy == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Minecraft Java server is unreachable
+          description: mc-monitor has reported an unhealthy status for over 2 minutes.
+
+      - alert: MinecraftMonitoringUnavailable
+        expr: up{job="mc-monitor"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: mc-monitor exporter is unreachable
+          description: Prometheus cannot scrape mc-monitor for over 2 minutes.
