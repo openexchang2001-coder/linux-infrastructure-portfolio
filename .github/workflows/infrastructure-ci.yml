@@ -1,0 +1,50 @@
+name: Infrastructure CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate Infrastructure Config
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Docker Compose
+        run: |
+          docker compose \
+            -f minecraft-server/compose.yaml \
+            -f minecraft-server/monitoring.compose.yaml \
+            -f minecraft-server/docker-exporter.compose.yaml \
+            -f minecraft-server/alertmanager.compose.yaml \
+            config -q
+
+      - name: Validate Prometheus configuration
+        run: |
+          docker run --rm \
+            --entrypoint /bin/promtool \
+            -v "$PWD/minecraft-server/monitoring:/etc/prometheus:ro" \
+            prom/prometheus:latest \
+            check config /etc/prometheus/prometheus.yml
+
+      - name: Validate Prometheus alert rules
+        run: |
+          docker run --rm \
+            --entrypoint /bin/promtool \
+            -v "$PWD/minecraft-server/monitoring:/etc/prometheus:ro" \
+            prom/prometheus:latest \
+            check rules /etc/prometheus/alert-rules.yml
+
+      - name: Validate Alertmanager configuration
+        run: |
+          docker run --rm \
+            --entrypoint /bin/amtool \
+            -v "$PWD/minecraft-server/monitoring:/etc/alertmanager:ro" \
+            prom/alertmanager:v0.34.1 \
+            check-config /etc/alertmanager/alertmanager.yml
