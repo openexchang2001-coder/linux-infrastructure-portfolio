@@ -42,15 +42,15 @@ Alert threshold: 2 minutes
 | Alert FIRING observed | PASS |
 | Alert returned to INACTIVE | PASS |
 | Rule evaluation health | PASS |
-| Gmail notification delivery | Not yet verified |
+| Gmail FIRING notification | PASS - Received |
+| Gmail RESOLVED notification | PASS - Received |
 
 ## Scope and Limitations
 
 This test simulated a monitoring endpoint outage,
 not a Minecraft server outage.
 
-Alert notification delivery and timing were not
-fully verified in this test.
+Both FIRING and RESOLVED Gmail notifications were received. Notification latency was not measured.
 
 A separate server outage test is required before
 production deployment.
