@@ -11,6 +11,11 @@ alerting:
         - targets: ["alertmanager:9093"]
 
 scrape_configs:
+
+  - job_name: last7days-minecraft
+    static_configs:
+      - targets: ["last7days-mc-monitor:8080"]
+
   - job_name: prometheus
     static_configs:
       - targets: ["localhost:9090"]

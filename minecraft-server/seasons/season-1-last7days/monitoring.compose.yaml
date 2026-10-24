@@ -1,0 +1,24 @@
+services:
+  last7days-mc-monitor:
+    image: itzg/mc-monitor:latest
+    restart: unless-stopped
+    command: ["export-for-prometheus"]
+
+    environment:
+      EXPORT_SERVERS: "mc:25565"
+
+    depends_on:
+      mc:
+        condition: service_healthy
+
+    expose:
+      - "8080"
+
+    networks:
+      - default
+      - existing_monitoring
+
+networks:
+  existing_monitoring:
+    external: true
+    name: minecraft-server_default
