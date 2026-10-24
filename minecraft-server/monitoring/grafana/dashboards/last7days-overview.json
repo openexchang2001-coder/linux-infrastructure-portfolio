@@ -9,7 +9,7 @@
   ],
   "timezone": "browser",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "refresh": "30s",
   "time": {
     "from": "now-1h",
@@ -276,6 +276,186 @@
           "unit": "none",
           "min": 0,
           "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "CPU Usage",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_source}"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "100 * rate(docker_container_cpu_usage_seconds_total{job=\"docker-exporter\",name=\"season-1-last7days-mc-1\"}[5m])",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_source}"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Memory Usage",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_source}"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "docker_container_memory_usage_bytes{job=\"docker-exporter\",name=\"season-1-last7days-mc-1\"}",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_source}"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "decimals": 2,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 8,
+      "title": "CPU Usage - History",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_source}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "100 * rate(docker_container_cpu_usage_seconds_total{job=\"docker-exporter\",name=\"season-1-last7days-mc-1\"}[5m])",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_source}"
+          },
+          "legendFormat": "CPU Usage - History"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "title": "Memory Usage - History",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_source}"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "docker_container_memory_usage_bytes{job=\"docker-exporter\",name=\"season-1-last7days-mc-1\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_source}"
+          },
+          "legendFormat": "Memory Usage - History"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "min": 0
         },
         "overrides": []
       },
