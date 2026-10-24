@@ -27,3 +27,18 @@ groups:
         annotations:
           summary: Minecraft monitoring metrics are missing
           description: Minecraft health metrics have been absent for over 2 minutes.
+
+  - name: last7days.minecraft
+    rules:
+      - alert: Last7DaysMinecraftDown
+        expr: |
+          (minecraft_status_healthy{job="last7days-minecraft"} == 0)
+          or (up{job="last7days-minecraft"} == 0)
+          or absent(minecraft_status_healthy{job="last7days-minecraft"})
+        for: 2m
+        labels:
+          severity: critical
+          service: last7days
+        annotations:
+          summary: "LAST 7 DAYS Minecraft server unavailable"
+          description: "Minecraft or its monitoring endpoint has been unavailable for over 2 minutes."
