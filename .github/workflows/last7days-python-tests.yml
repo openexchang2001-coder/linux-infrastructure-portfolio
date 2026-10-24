@@ -1,0 +1,40 @@
+name: LAST 7 DAYS - Python Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'minecraft-server/seasons/season-1-last7days/scripts/**'
+      - 'minecraft-server/seasons/season-1-last7days/tests/**'
+      - '.github/workflows/last7days-python-tests.yml'
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-tests:
+    name: Python Unit Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: minecraft-server/seasons/season-1-last7days
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Run 17 unit tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v

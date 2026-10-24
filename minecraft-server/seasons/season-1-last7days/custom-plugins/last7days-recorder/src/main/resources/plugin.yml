@@ -1,0 +1,5 @@
+name: Last7DaysRecorder
+version: 1.0.0
+main: dev.last7days.DeathRecorder
+api-version: '26.3'
+description: Records player death events for LAST 7 DAYS

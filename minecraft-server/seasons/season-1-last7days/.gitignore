@@ -21,3 +21,9 @@ crash-reports/
 
 .recovery-lab/
 *.bak
+config/scoreboard.conf
+
+# Generated build and Python cache files
+custom-plugins/last7days-recorder/target/
+__pycache__/
+*.pyc
