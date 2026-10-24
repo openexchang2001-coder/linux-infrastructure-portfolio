@@ -1,0 +1,23 @@
+# secrets and runtime world data
+.env
+.env.*
+!.env.example
+mc-data/
+backups/
+*.log
+*.jar
+*.zip
+*.tgz
+*.tar.gz
+whitelist.json
+banned-players.json
+banned-ips.json
+ops.json
+usercache.json
+logs/
+crash-reports/
+*.sqlite
+*.db
+
+.recovery-lab/
+*.bak

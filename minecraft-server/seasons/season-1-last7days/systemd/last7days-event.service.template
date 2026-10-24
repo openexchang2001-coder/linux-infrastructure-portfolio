@@ -1,0 +1,8 @@
+[Unit]
+Description=LAST 7 DAYS Event Scheduler and Recovery
+
+[Service]
+Type=oneshot
+User=__USER__
+WorkingDirectory=__PROJECT_DIR__
+ExecStart=__PROJECT_DIR__/scripts/run-event-cycle.sh
